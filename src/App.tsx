@@ -1,6 +1,6 @@
-
 import './App.css'
 import Header from './components/Header'
+import EditAccount from './components/EditAccount'
 
 function App() {
 
@@ -8,6 +8,7 @@ function App() {
     <div className='text-3xl'>
       <Header></Header>
     </div>
+    // <EditAccount />
   )
 }
 
