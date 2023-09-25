@@ -1,3 +1,4 @@
+
 import './App.css'
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
@@ -10,15 +11,27 @@ import Sign_up from './pages/auth/Sign_up'
 import Auth_layout from './layout/auth/Auth_layout'
 import Error404 from './pages/standar/Error404'
 import { ToastContainer, toast } from 'react-toastify';
-import Header from './components/Header'
-import EditAccount from './components/EditAccount'
 
 function App() {
 
   return (
-    <div className='text-3xl'>
-      <Header></Header>
-    </div>
+    <>
+    <Router>
+        <Routes>
+          <Route path='/' element={<Auth_layout/>}>
+            <Route index element={<Login/>}></Route>  
+            <Route path='/activate/:uid/:token' Component={Activate}> </Route>
+            <Route path='/login' Component={Login}> </Route>
+            <Route path='/password/reset/confirm/:uid/:token' Component={Rest_password_comfirmation}> </Route>
+            <Route path='/rest-password' Component={Reset_password}> </Route>
+            <Route path='/sign-up' Component={Sign_up}> </Route>
+          </Route>
+          
+           <Route path='*' element={<Error404/>}/>
+        </Routes>
+    </Router>
+    <ToastContainer />
+    </>
   )
 }
 
