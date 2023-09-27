@@ -32,7 +32,7 @@ const Sign_up = () => {
                     <p className=" text-white text-xl font-bold text-xl pb-5">¡¡De nada sirve hacer ejercicio sin tener un orden!!</p>
                     <p className="text-white text-lg">Nuestra app está diseñada para hacer tus horas de ejercicio algo más controlado</p>
                     <div className='flex justify-center pt-10'>
-                        <img src="../src/logo.png" alt="Logo"></img>
+                        <img src="../src/assets/logo.png" alt="Logo"></img>
                     </div>
                 </div>    
             </div>

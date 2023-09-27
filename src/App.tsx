@@ -11,6 +11,7 @@ import Sign_up from './pages/auth/Sign_up'
 import Auth_layout from './layout/auth/Auth_layout'
 import Error404 from './pages/standar/Error404'
 import Edit_Account from './pages/auth/Edit_account'
+import Home from './pages/standar/Home'
 import { ToastContainer, toast } from 'react-toastify';
 
 function App() {
@@ -19,8 +20,9 @@ function App() {
     <>
     <Router>
         <Routes>
+        <Route path='/home' Component={Home}> </Route>
           <Route path='/' element={<Auth_layout/>}>
-            <Route index element={<Login/>}></Route>  
+            <Route index element={<Login/>}></Route>
             <Route path='/activate/:uid/:token' Component={Activate}> </Route>
             <Route path='/login' Component={Login}> </Route>
             <Route path='/password/reset/confirm/:uid/:token' Component={Rest_password_comfirmation}> </Route>
