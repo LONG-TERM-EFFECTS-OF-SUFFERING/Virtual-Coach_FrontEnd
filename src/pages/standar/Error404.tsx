@@ -14,10 +14,10 @@ const Error404 = () => {
       <Navbar />
       <section className="flex justify-center items-center h-full px-16 pt-16">
         <div className="bg-white rounded-3xl px-16">
-        <div className="px-4 lg:py-12">
+        <div className="px-4 md:h-  lg:py-12">
           <div className="lg:gap-4 lg:flex">
             <div
-              className="flex flex-col items-center justify-center md:py-24 lg:py-32"
+              className="flex flex-col items-center justify-center pt-10  lg:py-24 xl:py-32"
             >
               <h1 className="font-bold text-blue-600 text-9xl">404</h1>
               <p
@@ -33,11 +33,11 @@ const Error404 = () => {
                 Página principal
               </button>
             </div>
-            <div className="mt-4">
+            <div className="flex items-center justify-center xl:w-max relative ">
               <img
                 src="https://cdn-icons-png.flaticon.com/512/5753/5753159.png"
                 alt="img"
-                className="object-cover w-full h-full"
+                className="object-cover"
               />
             </div>
           </div>

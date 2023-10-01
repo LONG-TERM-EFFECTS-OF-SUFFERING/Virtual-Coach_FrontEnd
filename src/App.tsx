@@ -13,11 +13,13 @@ import Error404 from './pages/standar/Error404'
 import Edit_Account from './pages/auth/Edit_account'
 import Home from './pages/standar/Home'
 import { ToastContainer, toast } from 'react-toastify';
-
+import store from './store';
+import { Provider } from 'react-redux';
 function App() {
 
   return (
     <>
+    <Provider store={store} >
     <Router>
         <Routes>
         <Route path='/home' Component={Home}> </Route>
@@ -35,6 +37,7 @@ function App() {
         </Routes>
     </Router>
     <ToastContainer />
+    </Provider>
     </>
   )
 }
