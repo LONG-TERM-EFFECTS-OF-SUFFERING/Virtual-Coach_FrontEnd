@@ -8,20 +8,20 @@ const Sidebar = () => {
 
     const navLinks = [
         {
-            display: 'Mis Rutinas',
-            path: '#'
+            display: 'My Rutines',
+            path: '/dashboard/myRutines'
         },
         {
             display: 'Rutinas Recomendadas',
-            path: '#'
+            path: '/dashboard/recomendedRutines'
         },
         {
             display: 'Crear Rutina',
-            path: '#'
+            path: '/dashboard/makeRutine'
         },
         {
             display: 'Log Out',
-            path: '#'
+            path: '/dashboard/logOut'
         }
     ]
 
