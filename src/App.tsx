@@ -15,7 +15,8 @@ import Home from './pages/standar/Home'
 import { ToastContainer, toast } from 'react-toastify';
 import store from './store';
 import { Provider } from 'react-redux';
-import Dashboard from './pages/dashboard/Dashboard'
+import Dashboard_layout from './layout/dashboard/Dashboard_layout'
+import Dashboard_MyRutines from './pages/dashboard/Dashboard_MyRutines'
 function App() {
 
   return (
@@ -23,7 +24,11 @@ function App() {
     <Provider store={store} >
     <Router>
         <Routes>
-        <Route path='/dashboard' Component={Dashboard}> </Route>
+        {/* Dashboard Routes */}
+        <Route path='/dashboard' element={<Dashboard_layout />}>
+            <Route index element={<Dashboard_MyRutines />} />
+        </Route>
+
         <Route path='/home' Component={Home}> </Route>
           <Route path='/' element={<Auth_layout/>}>
             <Route index element={<Login/>}></Route>

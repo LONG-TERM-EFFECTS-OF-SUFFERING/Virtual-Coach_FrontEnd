@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import logo from '../assets/logo.png'
+import logo from '../../assets/logo.png'
 
 
 const Sidebar = () => {
@@ -8,20 +8,20 @@ const Sidebar = () => {
 
     const navLinks = [
         {
-            display: 'My Rutines',
-            path: '/dashboard/myRutines'
+            display: 'Mis Rutinas',
+            path: '#'
         },
         {
             display: 'Rutinas Recomendadas',
-            path: '/dashboard/recomendedRutines'
+            path: '#'
         },
         {
             display: 'Crear Rutina',
-            path: '/dashboard/makeRutine'
+            path: '#'
         },
         {
             display: 'Log Out',
-            path: '/dashboard/logOut'
+            path: '#'
         }
     ]
 
