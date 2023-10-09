@@ -1,5 +1,5 @@
 import React from 'react'
-import Sidebar from '../../components/Sidebar'
+import Sidebar from '../../components/dashboard/Sidebar'
 import { Outlet } from 'react-router-dom'
 
 const Dashboard_layout = () => {
@@ -7,7 +7,7 @@ const Dashboard_layout = () => {
         <>
             <Sidebar />
             {/* Aqui abajo ira cada seccion del Dashboard */}
-            <div className="p-4 sm:ml-64">
+            <div className="p-4 sm:ml-64 min-h-screen">
                 <Outlet />
             </div>
 

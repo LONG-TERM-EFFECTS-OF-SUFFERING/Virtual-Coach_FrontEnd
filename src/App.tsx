@@ -27,6 +27,7 @@ function App() {
         {/* Dashboard Routes */}
         <Route path='/dashboard' element={<Dashboard_layout />}>
             <Route index element={<Dashboard_MyRutines />} />
+            <Route path='/dashboard/myRutines' element={<Dashboard_MyRutines />} />
         </Route>
 
         <Route path='/home' Component={Home}> </Route>
