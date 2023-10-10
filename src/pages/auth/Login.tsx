@@ -3,10 +3,11 @@ import { Link, redirect } from "react-router-dom"
 import { connect } from "react-redux"
 import { PiPasswordLight, PiUserLight } from 'react-icons/pi';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-import {login} from '../../actions/auth';
+import {loginType} from '../../interfaces/auth'
+import { login } from "../../actions/auth";
 
 
-const Login = ({login}) => {
+const Login: React.FC<loginType>= ({login}) => {
 
 
   const [formData, setFormData] = useState({
@@ -21,11 +22,11 @@ const Login = ({login}) => {
   };
   
 
-  const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const onChange = (e:any) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const { email, password } = formData;
 
-  const onSubmit =  (e) => {
+  const onSubmit =  (e:any) => {
     e.preventDefault()
     login(email, password);
   }

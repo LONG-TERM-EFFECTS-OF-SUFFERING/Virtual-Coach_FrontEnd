@@ -5,11 +5,11 @@ import {
     LOGIN_FAIL,
     LOAD_USER_SUCCESS,
     LOAD_USER_FAIL,
-} from '../actions/types';
+} from './types';
 
 const api_url =import.meta.env.VITE_API_URL;
 
-export const login = (email, password) => async dispatch => {
+export const login = (email:string, password:string) => async (dispatch:any) => {
     const config ={
         headers: {
             'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ export const login = (email, password) => async dispatch => {
 
 }
 
-export const load_user = () => async dispatch => {
+export const load_user = () => async (dispatch:any) => {
     if (localStorage.getItem('access')) {
         const config ={
             headers: {
