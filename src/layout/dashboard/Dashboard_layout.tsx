@@ -1,4 +1,3 @@
-import React from 'react'
 import Sidebar from '../../components/dashboard/Sidebar'
 import { Outlet } from 'react-router-dom'
 

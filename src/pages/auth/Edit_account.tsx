@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { PiPasswordLight, PiUserLight } from 'react-icons/pi';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
 const EditAccount = () => {
 
-  const [formData, setFormData] = useState({
-    name: "",
-    password: "",
-  })
+  //const [formData, setFormData] = useState({
+  //  name: "",
+  //  password: "",
+  //})
 
   const [showPassword, setShowPassword] = useState(false)
 
@@ -15,12 +15,12 @@ const EditAccount = () => {
     setShowPassword(!showPassword);
   };
 
-  const onChange = (e: any) => setFormData({ ...formData, [e.target.name]: e.target.value })
+  //const onChange = (e: any) => setFormData({ ...formData, [e.target.name]: e.target.value })
 
-  const onSubmit = async (e: any) => {
-    e.preventDefault()
-    console.log("SUCCESS")
-  }
+  //const onSubmit = async (e: any) => {
+  //  e.preventDefault()
+  //  console.log("SUCCESS")
+  //}
 
   return (
     <div className="bg-white p-8 w-full md:w-96 rounded-xl">

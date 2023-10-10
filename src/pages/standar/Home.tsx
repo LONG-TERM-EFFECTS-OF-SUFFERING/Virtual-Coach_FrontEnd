@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import NavBar from '../../components/Navbar.tsx'
+import BackgroundImage from '../../assets/landing_page_background.jpg'
 
 const Home = () => {
 
@@ -14,7 +15,7 @@ const Home = () => {
   }
 
   return (
-    <div className="bg-cover bg-center h-screen" style={{ backgroundImage: `url('../src/assets/landing_page_background.jpg')` }}>
+    <div className="bg-cover bg-center h-screen" style={{ backgroundImage: `url(${BackgroundImage})` }}>
       <NavBar />
       <div className="flex justify-center items-center h-full px-16 pt-32">
         <section className="mb-32">

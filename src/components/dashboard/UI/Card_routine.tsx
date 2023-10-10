@@ -1,7 +1,7 @@
 import React from 'react'
 import { routine } from '../../../interfaces/routine'
 
-const Card_routine: React.FC<routine> = ({ id, name, time, description, exercise_number }) => {
+const Card_routine: React.FC<routine> = ({ name, time, description, exercise_number }) => {
     return (
         <div className="rounded overflow-hidden shadow-lg bg-gray-600 hover:bg-gray-500">
                 <div className="px-6 pt-4">
