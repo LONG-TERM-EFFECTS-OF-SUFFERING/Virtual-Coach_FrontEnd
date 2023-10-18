@@ -12,7 +12,7 @@ import Error404 from './pages/standar/Error404'
 import Edit_Account from './pages/auth/Edit_account'
 import Home from './pages/standar/Home'
 import { ToastContainer } from 'react-toastify';
-import store from './store';
+import { store } from './store/store'
 import { Provider } from 'react-redux';
 import Dashboard_layout from './layout/dashboard/Dashboard_layout'
 import Dashboard_MyRutines from './pages/dashboard/Dashboard_MyRutines'

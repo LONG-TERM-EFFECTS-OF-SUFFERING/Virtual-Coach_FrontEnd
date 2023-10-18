@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 import { PiPasswordLight, PiUserLight } from 'react-icons/pi';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import {loginType} from '../../interfaces/auth'
-import { login } from "../../actions/auth";
+import { login } from '../../actions/auth';
 
 
 const Login: React.FC<loginType>= ({login}) => {
