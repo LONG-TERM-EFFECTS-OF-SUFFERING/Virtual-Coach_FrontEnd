@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import LogoImage from '../../assets/logo.png'
 
 const Sign_up = () => {
 
@@ -6,8 +7,6 @@ const Sign_up = () => {
   const[password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
 
-  
-  
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -32,7 +31,7 @@ const Sign_up = () => {
                     <p className=" text-white text-xl font-bold text-xl pb-5">¡¡De nada sirve hacer ejercicio sin tener un orden!!</p>
                     <p className="text-white text-lg">Nuestra app está diseñada para hacer tus horas de ejercicio algo más controlado</p>
                     <div className='flex justify-center pt-10'>
-                        <img src="../src/assets/logo.png" alt="Logo"></img>
+                        <img src={LogoImage} alt="Logo"></img>
                     </div>
                 </div>    
             </div>

@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import NavBar from '../../components/Navbar.tsx'
 import BackgroundImage from '../../assets/landing_page_background.jpg'
+import GymImage from '../../assets/gym_picture.jpg'
 
 const Home = () => {
 
@@ -22,7 +23,7 @@ const Home = () => {
           <div className="flex flex-wrap">
             <div className="mb-12 w-full shrink-0 grow-0 basis-auto lg:mb-0 lg:w-5/12">
               <div className="flex lg:py-12">
-                <img src="../src/assets/gym_picture.jpg"
+                <img src={GymImage}
                   className="w-full rounded-lg shadow-lg dark:shadow-black/20 lg:ml-[50px] z-[10]" alt="image" />
               </div>
             </div>

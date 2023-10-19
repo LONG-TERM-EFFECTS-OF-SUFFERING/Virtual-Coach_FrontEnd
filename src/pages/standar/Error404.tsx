@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../../components/Navbar'
+import BackgroundImage from '../../assets/landing_page_background.jpg'
 
 const Error404 = () => {
 
@@ -10,7 +11,7 @@ const Error404 = () => {
   }
 
   return (
-    <div className="bg-cover bg-center h-screen" style={{ backgroundImage: `url('../src/assets/landing_page_background.jpg')` }}>
+    <div className="bg-cover bg-center h-screen" style={{ backgroundImage: `url(${BackgroundImage})` }}>
       <Navbar />
       <section className="flex justify-center items-center h-full px-16 pt-16">
         <div className="bg-white rounded-3xl px-16">
