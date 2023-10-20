@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 import { PiPasswordLight, PiUserLight } from 'react-icons/pi';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { LoginType } from '../../interfaces/auth'
-import { login } from '../../actions/auth';
+import { login, verify_user } from '../../actions/auth';
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 
@@ -38,11 +38,15 @@ const Login: React.FC<LoginProps> = ({ login, access }) => {
 
   const navigate = useNavigate()
   useEffect(() => {
-    console.log(access)
-    if (access != null) {
-      navigate('/dashboard')
-    }
-  },[access])
+    const checkUser = async () => {
+      const userVerified = await verify_user(access);
+      if (userVerified) {
+        navigate('/dashboard');
+      }
+    };
+
+    checkUser();
+  }, [access]);
 
   return (
     <div className="bg-white p-8 w-full md:w-96 rounded-xl">

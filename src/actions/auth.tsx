@@ -41,7 +41,7 @@ export const load_user = () => async (dispatch: any) => {
                 'Accept': 'application/json'
             }
         }
-        console.log(config)
+
         await axios
             .get(`${api_url}/auth/users/me/`, config)
             .then((response) => {
@@ -54,5 +54,22 @@ export const load_user = () => async (dispatch: any) => {
             })
     } else {
         dispatch(loadUserFail())
+    }
+}
+
+export const verify_user = async (token: string) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+    
+    const body = JSON.stringify({ token });
+
+    try {
+        const response = await axios.post(`${api_url}/auth/jwt/verify/`, body, config);
+        return true;
+    } catch (err) {
+        return false;
     }
 }
