@@ -9,10 +9,10 @@ import { useNavigate } from "react-router-dom";
 
 type LoginProps = {
   login: any,
-  isAuthenticated: boolean
+  access: any
 }
 
-const Login: React.FC<LoginProps> = ({ login, isAuthenticated }) => {
+const Login: React.FC<LoginProps> = ({ login, access }) => {
 
   const [formData, setFormData] = useState({
     email: "",
@@ -38,10 +38,11 @@ const Login: React.FC<LoginProps> = ({ login, isAuthenticated }) => {
 
   const navigate = useNavigate()
   useEffect(() => {
-    if (isAuthenticated) {
+    console.log(access)
+    if (access != null) {
       navigate('/dashboard')
     }
-  },[isAuthenticated])
+  },[access])
 
   return (
     <div className="bg-white p-8 w-full md:w-96 rounded-xl">
@@ -74,7 +75,7 @@ const Login: React.FC<LoginProps> = ({ login, isAuthenticated }) => {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  isAuthenticated: state.user.isAuthenticated
+  access: state.user.access
 })
 
 
