@@ -45,6 +45,14 @@ export const userSlice = createSlice({
         loadUserFail: (state) => {
             state.isAuthenticated = false
             state.user = null
+        },
+        logoutUser: (state) => {
+            localStorage.removeItem('access')
+            localStorage.removeItem('refresh')
+            state.refresh = null
+            state.access = null
+            state.isAuthenticated = false
+            state.user = null
         }
 
     }
@@ -55,6 +63,7 @@ export const {
     loginUserFail,
     loadUserSuccess,
     loadUserFail,
+    logoutUser
 } = userSlice.actions
 
 export default userSlice.reducer

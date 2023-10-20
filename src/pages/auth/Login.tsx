@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import { connect } from "react-redux"
 import { PiPasswordLight, PiUserLight } from 'react-icons/pi';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-import { LoginType } from '../../interfaces/auth'
 import { login, verify_user } from '../../actions/auth';
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
@@ -33,6 +32,7 @@ const Login: React.FC<LoginProps> = ({ login, access }) => {
 
   const onSubmit = (e: any) => {
     e.preventDefault()
+    e.stopPropagation()
     login(email, password)
   }
 
