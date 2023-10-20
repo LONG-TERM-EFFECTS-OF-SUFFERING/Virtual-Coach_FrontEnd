@@ -23,39 +23,28 @@ export const userSlice = createSlice({
             const { payload } = action
             localStorage.removeItem('access');
             localStorage.setItem('access', payload.access)
-            state = {
-                ...state,
-                isAuthenticated: true,
-                access: payload.access,
-                refresh: payload.refresh,
-            }
+
+            state.isAuthenticated = true
+            state.access = payload.access
+            state.refresh = payload.refresh
         },
-        loginUserFail: (state, action) => {
+        loginUserFail: (state) => {
             localStorage.removeItem('access');
             localStorage.removeItem('refresh');
 
-            state = {
-                ...state,
-                refresh: null,
-                access: null,
-                isAuthenticated: false,
-            }
+            state.refresh = null
+            state.access = null
+            state.isAuthenticated = false
         },
         loadUserSuccess: (state, action) => {
             const { payload } = action
-            console.log(action)
-            state = {
-                ...state,
-                isAuthenticated: true,
-                user: payload,
-            }
+
+            state.isAuthenticated = true
+            state.user = payload
         },
         loadUserFail: (state) => {
-            state = {
-                ...state,
-                isAuthenticated: false,
-                user: null,
-            }
+            state.isAuthenticated = false
+            state.user = null
         }
 
     }

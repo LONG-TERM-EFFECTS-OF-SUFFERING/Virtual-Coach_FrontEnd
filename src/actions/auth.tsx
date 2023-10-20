@@ -24,7 +24,7 @@ export const login = (email: string, password: string) => async (dispatch: any) 
         })
         .catch((err) => {
             dispatch(
-                loginUserFail(err)
+                loginUserFail()
             )
         })
 
@@ -40,7 +40,7 @@ export const load_user = () => async (dispatch: any) => {
             }
         }
         console.log(config)
-        axios
+        await axios
             .get(`${api_url}/auth/users/me/`, config)
             .then((response) => {
                 dispatch(
@@ -48,7 +48,6 @@ export const load_user = () => async (dispatch: any) => {
                 )
             })
             .catch((err) => {
-                console.log(err)
                 dispatch(loadUserFail())
             })
     } else {
