@@ -2,10 +2,12 @@ import axios from 'axios';
 
 
 import { loadUserFail, loadUserSuccess, loginUserFail, loginUserSuccess } from '../store/slices/user/user'
+import { AppDispatch } from '../store/store';
+import { LoginType } from '../interfaces/auth';
 
 const api_url = import.meta.env.VITE_API_URL;
 
-export const login = (email: string, password: string) => async (dispatch: any) => {
+export const login: LoginType = (email: string, password: string) => async (dispatch: AppDispatch) => {
 
     const config = {
         headers: {

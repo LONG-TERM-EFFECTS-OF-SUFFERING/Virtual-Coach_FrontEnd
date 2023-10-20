@@ -1,3 +1,3 @@
-export interface loginType {
-    login: (email: string, password: string) => void;
-}
+import { AppDispatch } from "../store/store";
+
+export type LoginType = (email: string, password: string) => (dispatch: AppDispatch) => Promise<void>;
