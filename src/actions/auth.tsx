@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-import { loadUserFail, loadUserSuccess, loginUserFail, loginUserSuccess } from '../store/slices/user/user'
+import { loadUserFail, loadUserSuccess, loginUserFail, loginUserSuccess, logoutUser } from '../store/slices/user/user'
 import { AppDispatch } from '../store/store';
 import { LoginType } from '../interfaces/auth';
 
@@ -16,7 +16,7 @@ export const login: LoginType = (email: string, password: string) => async (disp
     };
     const body = JSON.stringify({ email, password });
 
-    await axios
+    const response = await axios
         .post(`${api_url}/auth/jwt/create/`, body, config)
         .then((response) => {
             dispatch(
@@ -25,6 +25,7 @@ export const login: LoginType = (email: string, password: string) => async (disp
             dispatch(load_user())
         })
         .catch((err) => {
+            console.log(err)
             dispatch(
                 loginUserFail()
             )
@@ -50,6 +51,7 @@ export const load_user = () => async (dispatch: any) => {
                 )
             })
             .catch((err) => {
+                console.log(err)
                 dispatch(loadUserFail())
             })
     } else {
@@ -58,18 +60,25 @@ export const load_user = () => async (dispatch: any) => {
 }
 
 export const verify_user = async (token: string) => {
+    
+    if(token == null) return false
+
     const config = {
         headers: {
             'Content-Type': 'application/json'
         }
     }
-    
     const body = JSON.stringify({ token });
 
     try {
         const response = await axios.post(`${api_url}/auth/jwt/verify/`, body, config);
+        console.log(response)
         return true;
     } catch (err) {
         return false;
     }
+}
+
+export const logout = () => (dispatch: any) => {
+    dispatch(logoutUser())
 }

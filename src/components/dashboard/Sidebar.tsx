@@ -1,8 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import logo from '../../assets/logo.png'
+import { logout, verify_user } from '../../actions/auth'
+import { useNavigate } from 'react-router-dom'
+import { RootState } from '../../store/store'
+import { connect } from 'react-redux'
 
+type SideBarProps = {
+    logout: any,
+    access: any
+}
 
-const Sidebar = () => {
+const Sidebar: React.FC<SideBarProps> = ({logout, access}) => {
 
     const [showSideBar, setShowSideBar] = useState(false)
 
@@ -18,12 +26,24 @@ const Sidebar = () => {
         {
             display: 'Crear Rutina',
             path: '/dashboard/makeRutine'
-        },
-        {
-            display: 'Log Out',
-            path: '/dashboard/logOut'
         }
     ]
+    const navigate = useNavigate()
+    const handleLogOut = (e:any) => {
+        e.preventDefault()
+        logout()
+    }
+
+    useEffect(() => {
+        const checkUser = async () => {
+            const userVerified = await verify_user(access);
+            if (!userVerified) {
+                navigate('/');
+            }
+        };
+
+        checkUser();
+    }, [access]);
 
     return (
         <>
@@ -67,6 +87,13 @@ const Sidebar = () => {
                                 </a>
                             </li>
                         ))}
+                        <li>
+                            <a 
+                            onClick={(e) => handleLogOut(e)}
+                            className="flex items-center p-2 rounded-lg text-white hover:bg-gray-700 group">
+                                <span className="ml-3">Log Out</span>
+                            </a>
+                        </li>
 
                     </ul>
                 </div>
@@ -75,4 +102,8 @@ const Sidebar = () => {
     )
 }
 
-export default Sidebar
+const mapStateToProps = (state: RootState) => ({
+    access: state.user.access
+})
+
+export default connect(mapStateToProps, { logout })(Sidebar)
