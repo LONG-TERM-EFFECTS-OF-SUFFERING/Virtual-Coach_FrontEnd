@@ -1,18 +1,5 @@
-import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom'
-import { verify_user } from '../../actions/auth';
+import { Outlet } from 'react-router-dom'
 
-const navigate = useNavigate()
-useEffect(() => {
-  const checkUser = async () => {
-    const userVerified = await verify_user(access);
-    if (userVerified) {
-      navigate('/dashboard');
-    }
-  };
-
-  checkUser();
-}, [acces]);
 
 const Auth_layout = () => {
   return (
