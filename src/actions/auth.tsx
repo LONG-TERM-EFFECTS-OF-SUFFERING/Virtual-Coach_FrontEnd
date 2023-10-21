@@ -60,12 +60,14 @@ export const load_user = () => async (dispatch: any) => {
 }
 
 export const verify_user = async (token: string) => {
+    
+    if(token == null) return false
+
     const config = {
         headers: {
             'Content-Type': 'application/json'
         }
     }
-    
     const body = JSON.stringify({ token });
 
     try {
