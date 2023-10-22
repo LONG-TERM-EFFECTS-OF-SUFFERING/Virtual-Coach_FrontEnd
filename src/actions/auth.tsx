@@ -16,7 +16,7 @@ export const login: LoginType = (email: string, password: string) => async (disp
     };
     const body = JSON.stringify({ email, password });
 
-    const response = await axios
+    await axios
         .post(`${api_url}/auth/jwt/create/`, body, config)
         .then((response) => {
             dispatch(
