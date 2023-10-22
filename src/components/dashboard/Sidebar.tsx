@@ -103,7 +103,7 @@ const Sidebar: React.FC<SideBarProps> = ({logout, access}) => {
 }
 
 const mapStateToProps = (state: RootState) => ({
-    access: state.user.access
+    access: state.access
 })
 
 export default connect(mapStateToProps, { logout })(Sidebar)

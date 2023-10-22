@@ -33,7 +33,7 @@ export const login: LoginType = (email: string, password: string) => async (disp
 
 }
 
-export const load_user = () => async (dispatch: any) => {
+export const load_user:any = () => async (dispatch: any) => {
     if (localStorage.getItem('access')) {
         const config = {
             headers: {
