@@ -1,0 +1,28 @@
+name: Test React App
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - test_action
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 'lts'
+
+    - name: Installing dependencies
+      run: npm i
+
+    - name: Running build command
+      run: npm run build
