@@ -1,80 +1,42 @@
-import axios from 'axios';
-
-
 import { loadUserFail, loadUserSuccess, loginUserFail, loginUserSuccess, logoutUser } from '../store/slices/user/user'
 import { AppDispatch } from '../store/store';
 import { LoginType } from '../interfaces/auth';
-
-const api_url = import.meta.env.VITE_API_URL;
+import { jwt_create, jwt_verify, users_me } from './api/auth';
 
 export const login: LoginType = (email: string, password: string) => async (dispatch: AppDispatch) => {
 
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
-    const body = JSON.stringify({ email, password });
-
-    await axios
-        .post(`${api_url}/auth/jwt/create/`, body, config)
-        .then((response) => {
-            dispatch(
-                loginUserSuccess(response.data)
-            )
-            dispatch(load_user())
-        })
-        .catch((err) => {
-            console.log(err)
-            dispatch(
-                loginUserFail()
-            )
-        })
-
+    try {
+        const data = await jwt_create(email, password)
+        dispatch(loginUserSuccess(data))
+        dispatch(load_user())
+    } catch {
+        dispatch(loginUserFail())
+    }
 }
 
-export const load_user:any = () => async (dispatch: any) => {
+export const load_user: any = () => async (dispatch: any) => {
     if (localStorage.getItem('access')) {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `JWT ${localStorage.getItem('access')}`,
-                'Accept': 'application/json'
-            }
+        try {
+            const data = await users_me()
+            dispatch(loadUserSuccess(data))
+        } catch {
+            dispatch(loadUserFail())
         }
-
-        await axios
-            .get(`${api_url}/auth/users/me/`, config)
-            .then((response) => {
-                dispatch(
-                    loadUserSuccess(response.data)
-                )
-            })
-            .catch((err) => {
-                console.log(err)
-                dispatch(loadUserFail())
-            })
     } else {
         dispatch(loadUserFail())
     }
 }
 
 export const verify_user = async (token: string) => {
-    
-    if(token == null) return false
 
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }
-    const body = JSON.stringify({ token });
+    if (token == null) return false
 
     try {
-        const response = await axios.post(`${api_url}/auth/jwt/verify/`, body, config);
-        console.log(response)
+        await jwt_verify(token)
+        console.log("Token Valido")
         return true;
-    } catch (err) {
+    } catch {
+        console.log("Token Invalido")
         return false;
     }
 }
