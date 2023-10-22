@@ -79,7 +79,7 @@ const Login: React.FC<LoginProps> = ({ login, access }) => {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  access: state.user.access
+  access: state.access
 })
 
 
