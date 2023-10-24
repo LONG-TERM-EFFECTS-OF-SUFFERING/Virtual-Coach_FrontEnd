@@ -26,6 +26,10 @@ const Sidebar: React.FC<SideBarProps> = ({logout, access}) => {
         {
             display: 'Crear Rutina',
             path: '/dashboard/makeRutine'
+        },
+        {
+            display: 'Editar mi Cuenta',
+            path: '/dashboard/edit-account'
         }
     ]
     const navigate = useNavigate()
