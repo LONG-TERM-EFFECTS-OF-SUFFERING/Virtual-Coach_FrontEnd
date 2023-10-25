@@ -40,3 +40,54 @@ export const users_me:any = async () => {
 
     return response.data
 }
+
+export const users_put:any = async (name:string) => {
+    const jwt_token = localStorage.getItem('access')
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${jwt_token}`,
+            'Accept': 'application/json'
+        }
+    }
+
+    const body = JSON.stringify({ name })
+
+    const response = await axios.put(`${api_url}/auth/users/me/`, body, config)
+
+    return response.data
+}
+
+export const set_email:any = async (new_email:string, re_new_email:string, current_password:string) => {
+    const jwt_token = localStorage.getItem('access')
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${jwt_token}`,
+            'Accept': 'application/json'
+        }
+    }
+
+    const body = JSON.stringify({ new_email, re_new_email, current_password })
+
+    const response = await axios.post(`${api_url}/auth/users/set_email/`, body, config)
+
+    return response.data
+}
+
+export const set_password:any = async (new_password:string, re_new_password:string, current_password:string) => {
+    const jwt_token = localStorage.getItem('access')
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${jwt_token}`,
+            'Accept': 'application/json'
+        }
+    }
+
+    const body = JSON.stringify({ new_password, re_new_password, current_password })
+
+    const response = await axios.post(`${api_url}/auth/users/set_password/`, body, config)
+
+    return response.data
+}
