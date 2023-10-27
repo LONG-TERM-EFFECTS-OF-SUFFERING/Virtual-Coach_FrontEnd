@@ -2,6 +2,9 @@ import { useState } from "react"
 import { PiPasswordLight, PiUserLight } from 'react-icons/pi';
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineMail } from 'react-icons/ai';
 import { set_email, set_password, users_put } from "../../actions/api/auth";
+import FailedAlert from "../../components/alerts/FailedAlert";
+import LoadingAlert from "../../components/alerts/LoadingAlert";
+import SuccessAlert from "../../components/alerts/SuccessAlert";
 //import { useSelector } from "react-redux";
 
 const EditAccount = () => {
@@ -23,6 +26,7 @@ const EditAccount = () => {
   const { new_password, re_new_password, current_password } = passwordForm
 
   const [showPassword, setShowPassword] = useState(false)
+  const [emailAlert, setEmailAlert] = useState({ show: false, status: "", msg: "" })
   //const user = useSelector((state: any) => state.user)
   //const id = user ? user.id : null
 
@@ -38,24 +42,21 @@ const EditAccount = () => {
     setPasswordForm({ ...passwordForm, [e.target.name]: e.target.value })
   }
 
-  const onSubmitEditedInfo = (e: any) => {
+  const onSubmitEditedInfo = async (e: any) => {
     e.preventDefault()
     e.stopPropagation()
-    try {
-      users_put(name)
-    } catch {
-      console.log("Error")
-    }
+    const data = await users_put(name)
+    console.log(data)
   }
 
-  const onSubmitChangeEmail = (e: any) => {
+  const onSubmitChangeEmail = async (e: any) => {
     e.preventDefault()
     e.stopPropagation()
-    try {
-      set_email(new_email, re_new_email, current_password_e)
-    } catch {
-      console.log("Error")
-    }
+    setEmailAlert({ show: true, status: "Loading", msg: ""})
+    const { data, error } = await set_email(new_email, re_new_email, current_password_e)
+    const msg = error ? data[Object.keys(data)[0]][0] : "Email Changed Successfully"
+    setEmailAlert({ show: error, status: error ? "Error":"Success" ,msg })
+
   }
 
   const onSubmitPasswordForm = (e: any) => {
@@ -86,6 +87,11 @@ const EditAccount = () => {
           </div>
         </form>
 
+        <div className="mt-4">
+          {!emailAlert.show && emailAlert.status=="Success" && <SuccessAlert message={emailAlert.msg} />}
+          {emailAlert.show && emailAlert.status=="Loading" && <LoadingAlert />}
+          {emailAlert.show && emailAlert.status=="Error" && <FailedAlert message={emailAlert.msg} />}
+        </div>
         <h1 className="mt-5 text-2xl font-bold mb-5 text-center">Cambiar Email</h1>
         <form className="flex flex-col gap-4" onSubmit={e => onSubmitChangeEmail(e)} >
           <div className="relative">
