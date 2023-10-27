@@ -5,6 +5,8 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { login, verify_user } from '../../actions/auth';
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
+import LoadingAlert from "../../components/alerts/LoadingAlert";
+import FailedAlert from "../../components/alerts/FailedAlert";
 
 type LoginProps = {
   login: any,
@@ -19,6 +21,7 @@ const Login: React.FC<LoginProps> = ({ login, access }) => {
   })
 
   const [showPassword, setShowPassword] = useState(false)
+  const [loginAlert, setLoginAlert] = useState({ show: false, status: "" , message: ""})
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
@@ -30,13 +33,16 @@ const Login: React.FC<LoginProps> = ({ login, access }) => {
   const { email, password } = formData;
 
 
-  const onSubmit = (e: any) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault()
     e.stopPropagation()
+    setLoginAlert({ show: true, status: "Loading", message: "" })
     const loginUser = async () => {
-      await login(email, password)
+      const result = await login(email, password)
+      return result
     }
-    loginUser()
+    const { status, message } = await loginUser()
+    setLoginAlert({ show: !status, status: message, message: message })
   }
 
   const navigate = useNavigate()
@@ -52,7 +58,12 @@ const Login: React.FC<LoginProps> = ({ login, access }) => {
   }, [access]);
 
   return (
+
     <div className="bg-white p-8 w-full md:w-96 rounded-xl">
+      <div className="mb-3">
+        {loginAlert.show && loginAlert.status == 'Loading' && <LoadingAlert />}
+        {loginAlert.show && loginAlert.status == 'Login Fail' && <FailedAlert message={loginAlert.message} />}
+      </div>
 
       <h1 className="text-2xl font-bold mb-5 text-center">Iniciar Sesión</h1>
       <form className="flex flex-col gap-4" onSubmit={e => onSubmit(e)}>
@@ -77,7 +88,6 @@ const Login: React.FC<LoginProps> = ({ login, access }) => {
         </div>
       </form>
     </div>
-
   )
 }
 
