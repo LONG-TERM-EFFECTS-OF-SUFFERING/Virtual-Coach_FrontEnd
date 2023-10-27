@@ -90,7 +90,11 @@ export const set_password: any = async (new_password: string, re_new_password: s
 
     const body = JSON.stringify({ new_password, re_new_password, current_password })
 
-    const response = await axios.post(`${api_url}/auth/users/set_password/`, body, config)
-
-    return response.data
+    try {
+        const response = await axios.post(`${api_url}/auth/users/set_password/`, body, config)
+        return { data: response.data, error: false }
+    }
+    catch (err: any) {
+        return { data: err.response.data, error: true }
+    }
 }

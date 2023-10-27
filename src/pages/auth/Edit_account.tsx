@@ -27,6 +27,7 @@ const EditAccount = () => {
 
   const [showPassword, setShowPassword] = useState(false)
   const [emailAlert, setEmailAlert] = useState({ show: false, status: "", msg: "" })
+  const [passwordAlert, setPasswordAlert] = useState({ show: false, status: "", msg: "" })
   //const user = useSelector((state: any) => state.user)
   //const id = user ? user.id : null
 
@@ -59,14 +60,13 @@ const EditAccount = () => {
 
   }
 
-  const onSubmitPasswordForm = (e: any) => {
+  const onSubmitPasswordForm = async (e: any) => {
     e.preventDefault()
     e.stopPropagation()
-    try {
-      set_password(new_password, re_new_password, current_password)
-    } catch {
-      console.log("Error")
-    }
+    setPasswordAlert({ show: true, status: "Loading", msg: ""})
+    const {error, data} = await set_password(new_password, re_new_password, current_password)
+    const msg = error ? data[Object.keys(data)[0]][0] : "Password Changed Successfully"
+    setPasswordAlert({ show: error, status: error ? "Error":"Success" ,msg })
   }
 
   return (
@@ -114,6 +114,11 @@ const EditAccount = () => {
           </div>
         </form>
 
+        <div className="mt-4">
+          {!passwordAlert.show && passwordAlert.status=="Success" && <SuccessAlert message={passwordAlert.msg} />}
+          {passwordAlert.show && passwordAlert.status=="Loading" && <LoadingAlert />}
+          {passwordAlert.show && passwordAlert.status=="Error" && <FailedAlert message={passwordAlert.msg} />}
+        </div>
         <h1 className="mt-5 text-2xl font-bold mb-5 text-center">Cambiar Contraseña</h1>
         <form className="flex flex-col gap-4" onSubmit={e => onSubmitPasswordForm(e)} >
           <div className="relative">
