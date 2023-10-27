@@ -28,6 +28,7 @@ const EditAccount = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [emailAlert, setEmailAlert] = useState({ show: false, status: "", msg: "" })
   const [passwordAlert, setPasswordAlert] = useState({ show: false, status: "", msg: "" })
+  const [nameAlert, setNameAlert] = useState({ show: false, status: "", msg: "" })
   //const user = useSelector((state: any) => state.user)
   //const id = user ? user.id : null
 
@@ -43,11 +44,13 @@ const EditAccount = () => {
     setPasswordForm({ ...passwordForm, [e.target.name]: e.target.value })
   }
 
-  const onSubmitEditedInfo = async (e: any) => {
+  const onSumbitChangeName = async (e: any) => {
     e.preventDefault()
     e.stopPropagation()
-    const data = await users_put(name)
-    console.log(data)
+    setNameAlert({ show: true, status: "Loading", msg: ""})
+    const {error, data} = await users_put(name)
+    const msg = error ? data[Object.keys(data)[0]][0] : "Name Changed Successfully"
+    setNameAlert({ show: error, status: error ? "Error":"Success" ,msg })
   }
 
   const onSubmitChangeEmail = async (e: any) => {
@@ -72,9 +75,14 @@ const EditAccount = () => {
   return (
     <div className="bg-gray-800 rounded-lg p-4 min-h-screen flex items-center justify-center">
       <div className="bg-gray-200 p-8 w-full md:w-96 rounded-xl" >
+        <div className="mb-4">
+          {!nameAlert.show && nameAlert.status=="Success" && <SuccessAlert message={nameAlert.msg} />}
+          {nameAlert.show && nameAlert.status=="Loading" && <LoadingAlert />}
+          {nameAlert.show && nameAlert.status=="Error" && <FailedAlert message={nameAlert.msg} />}
+        </div>
         <h1 className="text-2xl font-bold mb-5 text-center">Cambiar Nombre</h1>
         <p className="pb-4">Rellena los datos que desees modificar de tu cuenta</p>
-        <form className="flex flex-col gap-4" onSubmit={e => onSubmitEditedInfo(e)} >
+        <form className="flex flex-col gap-4" onSubmit={e => onSumbitChangeName(e)} >
           <div className="relative">
             <PiUserLight className={"absolute top-2 left-2"} />
             <input type="name" className="bg-gray-100 border w-full outline-none px-4 pl-7 rounded-lg py-1" placeholder="Nombre" onChange={e => onChangeEditedInfo(e)} name="name" value={name} />

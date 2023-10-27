@@ -53,9 +53,12 @@ export const users_put: any = async (name: string) => {
 
     const body = JSON.stringify({ name })
 
-    const response = await axios.put(`${api_url}/auth/users/me/`, body, config)
-
-    return response.data
+    try{
+        const response = await axios.put(`${api_url}/auth/users/me/`, body, config)
+        return { data: response.data, error: false }
+    } catch (err: any) {
+        return { data: err.response.data, error: true }
+    }
 }
 
 export const set_email: any = async (new_email: string, re_new_email: string, current_password: string) => {
