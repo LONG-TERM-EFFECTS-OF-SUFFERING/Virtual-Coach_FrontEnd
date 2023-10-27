@@ -33,7 +33,10 @@ const Login: React.FC<LoginProps> = ({ login, access }) => {
   const onSubmit = (e: any) => {
     e.preventDefault()
     e.stopPropagation()
-    login(email, password)
+    const loginUser = async () => {
+      await login(email, password)
+    }
+    loginUser()
   }
 
   const navigate = useNavigate()

@@ -27,6 +27,7 @@ function App() {
           <Route path='/dashboard' element={<Dashboard_layout />}>
             <Route index element={<Dashboard_MyRutines />} />
             <Route path='/dashboard/myRutines' element={<Dashboard_MyRutines />} />
+            <Route path='/dashboard/edit-account' element={<Edit_Account />}> </Route>
           </Route>
           <Route path='/home' Component={Home}> </Route>
           <Route path='/' element={<Auth_layout />}>
@@ -36,7 +37,6 @@ function App() {
             <Route path='/password/reset/confirm/:uid/:token' Component={Rest_password_comfirmation}> </Route>
             <Route path='/rest-password' Component={Reset_password}> </Route>
             <Route path='/sign-up' Component={Sign_up}> </Route>
-            <Route path='/edit-account' Component={Edit_Account}> </Route>
           </Route>
           <Route path='*' element={<Error404 />} />
         </Routes>
