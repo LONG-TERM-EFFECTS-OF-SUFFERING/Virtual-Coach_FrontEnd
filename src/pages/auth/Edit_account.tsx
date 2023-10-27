@@ -2,6 +2,9 @@ import { useState } from "react"
 import { PiPasswordLight, PiUserLight } from 'react-icons/pi';
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineMail } from 'react-icons/ai';
 import { set_email, set_password, users_put } from "../../actions/api/auth";
+import FailedAlert from "../../components/alerts/FailedAlert";
+import LoadingAlert from "../../components/alerts/LoadingAlert";
+import SuccessAlert from "../../components/alerts/SuccessAlert";
 //import { useSelector } from "react-redux";
 
 const EditAccount = () => {
@@ -23,6 +26,9 @@ const EditAccount = () => {
   const { new_password, re_new_password, current_password } = passwordForm
 
   const [showPassword, setShowPassword] = useState(false)
+  const [emailAlert, setEmailAlert] = useState({ show: false, status: "", msg: "" })
+  const [passwordAlert, setPasswordAlert] = useState({ show: false, status: "", msg: "" })
+  const [nameAlert, setNameAlert] = useState({ show: false, status: "", msg: "" })
   //const user = useSelector((state: any) => state.user)
   //const id = user ? user.id : null
 
@@ -38,42 +44,45 @@ const EditAccount = () => {
     setPasswordForm({ ...passwordForm, [e.target.name]: e.target.value })
   }
 
-  const onSubmitEditedInfo = (e: any) => {
+  const onSumbitChangeName = async (e: any) => {
     e.preventDefault()
     e.stopPropagation()
-    try {
-      users_put(name)
-    } catch {
-      console.log("Error")
-    }
+    setNameAlert({ show: true, status: "Loading", msg: ""})
+    const {error, data} = await users_put(name)
+    const msg = error ? data[Object.keys(data)[0]][0] : "Name Changed Successfully"
+    setNameAlert({ show: error, status: error ? "Error":"Success" ,msg })
   }
 
-  const onSubmitChangeEmail = (e: any) => {
+  const onSubmitChangeEmail = async (e: any) => {
     e.preventDefault()
     e.stopPropagation()
-    try {
-      set_email(new_email, re_new_email, current_password_e)
-    } catch {
-      console.log("Error")
-    }
+    setEmailAlert({ show: true, status: "Loading", msg: ""})
+    const { data, error } = await set_email(new_email, re_new_email, current_password_e)
+    const msg = error ? data[Object.keys(data)[0]][0] : "Email Changed Successfully"
+    setEmailAlert({ show: error, status: error ? "Error":"Success" ,msg })
+
   }
 
-  const onSubmitPasswordForm = (e: any) => {
+  const onSubmitPasswordForm = async (e: any) => {
     e.preventDefault()
     e.stopPropagation()
-    try {
-      set_password(new_password, re_new_password, current_password)
-    } catch {
-      console.log("Error")
-    }
+    setPasswordAlert({ show: true, status: "Loading", msg: ""})
+    const {error, data} = await set_password(new_password, re_new_password, current_password)
+    const msg = error ? data[Object.keys(data)[0]][0] : "Password Changed Successfully"
+    setPasswordAlert({ show: error, status: error ? "Error":"Success" ,msg })
   }
 
   return (
     <div className="bg-gray-800 rounded-lg p-4 min-h-screen flex items-center justify-center">
       <div className="bg-gray-200 p-8 w-full md:w-96 rounded-xl" >
+        <div className="mb-4">
+          {!nameAlert.show && nameAlert.status=="Success" && <SuccessAlert message={nameAlert.msg} />}
+          {nameAlert.show && nameAlert.status=="Loading" && <LoadingAlert />}
+          {nameAlert.show && nameAlert.status=="Error" && <FailedAlert message={nameAlert.msg} />}
+        </div>
         <h1 className="text-2xl font-bold mb-5 text-center">Cambiar Nombre</h1>
         <p className="pb-4">Rellena los datos que desees modificar de tu cuenta</p>
-        <form className="flex flex-col gap-4" onSubmit={e => onSubmitEditedInfo(e)} >
+        <form className="flex flex-col gap-4" onSubmit={e => onSumbitChangeName(e)} >
           <div className="relative">
             <PiUserLight className={"absolute top-2 left-2"} />
             <input type="name" className="bg-gray-100 border w-full outline-none px-4 pl-7 rounded-lg py-1" placeholder="Nombre" onChange={e => onChangeEditedInfo(e)} name="name" value={name} />
@@ -86,6 +95,11 @@ const EditAccount = () => {
           </div>
         </form>
 
+        <div className="mt-4">
+          {!emailAlert.show && emailAlert.status=="Success" && <SuccessAlert message={emailAlert.msg} />}
+          {emailAlert.show && emailAlert.status=="Loading" && <LoadingAlert />}
+          {emailAlert.show && emailAlert.status=="Error" && <FailedAlert message={emailAlert.msg} />}
+        </div>
         <h1 className="mt-5 text-2xl font-bold mb-5 text-center">Cambiar Email</h1>
         <form className="flex flex-col gap-4" onSubmit={e => onSubmitChangeEmail(e)} >
           <div className="relative">
@@ -108,6 +122,11 @@ const EditAccount = () => {
           </div>
         </form>
 
+        <div className="mt-4">
+          {!passwordAlert.show && passwordAlert.status=="Success" && <SuccessAlert message={passwordAlert.msg} />}
+          {passwordAlert.show && passwordAlert.status=="Loading" && <LoadingAlert />}
+          {passwordAlert.show && passwordAlert.status=="Error" && <FailedAlert message={passwordAlert.msg} />}
+        </div>
         <h1 className="mt-5 text-2xl font-bold mb-5 text-center">Cambiar Contraseña</h1>
         <form className="flex flex-col gap-4" onSubmit={e => onSubmitPasswordForm(e)} >
           <div className="relative">
