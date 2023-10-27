@@ -1,6 +1,5 @@
 import { loadUserFail, loadUserSuccess, loginUserFail, loginUserSuccess, logoutUser } from '../store/slices/user/user'
 import { AppDispatch } from '../store/store';
-import { LoginType } from '../interfaces/auth';
 import { jwt_create, jwt_verify, users_me } from './api/auth';
 
 export const login: any = (email: string, password: string) => async (dispatch: AppDispatch) => {
