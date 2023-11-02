@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import LogoImage from '../../assets/logo.png'
 import FailedAlert from '../../components/alerts/FailedAlert';
+import LoadingAlert from '../../components/alerts/LoadingAlert';
+import SuccessAlert from '../../components/alerts/SuccessAlert';
+import { user_create } from '../../actions/api/auth';
 //import SuccessAlert from '../../components/alerts/SuccessAlert';
 //import LoadingAlert from '../../components/alerts/LoadingAlert';
 
@@ -26,7 +29,10 @@ const Sign_up = () => {
     const handleSubmit = async (e: any) => {
         e.preventDefault()
         e.stopPropagation()
-        console.log(form)
+        setAlert({ show: true, status: "Loading", message: "" })
+        const { data, error } = await user_create(email, name, password, re_password)
+        const message = error ? data[Object.keys(data)[0]][0] : "Login Success"
+        setAlert({ show: error, status: error ? "Error" : "Success", message })
     }
 
     const iconOpen = <svg className="h-8 w-8 text-sky-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />  <circle cx="12" cy="12" r="3" /></svg>
@@ -54,10 +60,14 @@ const Sign_up = () => {
                         <div className='pb-10'>
                             <label className='text-white pb-12 font-bold'>¡¡Registrarse es gratis y toma poco tiempo!!</label>
                         </div>
+
+                        <div className="mb-3">
+                            {Alert.show && Alert.status == 'Loading' && <LoadingAlert />}
+                            {Alert.show && Alert.status == 'Error' && <FailedAlert message={Alert.message} />}
+                            {Alert.show && Alert.status == 'Success' && <SuccessAlert message={Alert.message} />}
+                        </div>
                         <form onSubmit={e => handleSubmit(e)} className="bg-white shadow-md flex flex-col items-center rounded-xl px-8 pt-10 pb-8 mb-1">
-                            <div className="mb-3">
-                                {Alert.show && Alert.status == 'Failed' && <FailedAlert message={Alert.message} />}
-                            </div>
+
                             <div className='pb-2'>
                                 <label className='font-bold'> Nombre</label>
                             </div>
