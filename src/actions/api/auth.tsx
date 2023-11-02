@@ -101,3 +101,21 @@ export const set_password: any = async (new_password: string, re_new_password: s
         return { data: err.response.data, error: true }
     }
 }
+
+export const user_create = async (email: string, name:string, password:string, re_password:string) => {
+    
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    const body = JSON.stringify({email, name, password, re_password});
+
+    try {
+        const response = await axios.post(`${api_url}/auth/users/`, body, config)
+        return { data: response.data, error: false }
+    }
+    catch (err: any){
+        return { data: err.response.data, error: true }
+    }
+}

@@ -21,27 +21,27 @@ function App() {
   return (
     <>
       <Provider store={store} >
-      <Router>
-        <Routes>
-          {/* Dashboard Routes */}
-          <Route path='/dashboard' element={<Dashboard_layout />}>
-            <Route index element={<Dashboard_MyRutines />} />
-            <Route path='/dashboard/myRutines' element={<Dashboard_MyRutines />} />
-            <Route path='/dashboard/edit-account' element={<Edit_Account />}> </Route>
-          </Route>
-          <Route path='/home' Component={Home}> </Route>
-          <Route path='/' element={<Auth_layout />}>
-            <Route index element={<Login/>}></Route>
-            <Route path='/activate/:uid/:token' Component={Activate}> </Route>
-            {/* <Route path='/login' Component={Login}> </Route> */}
-            <Route path='/password/reset/confirm/:uid/:token' Component={Rest_password_comfirmation}> </Route>
-            <Route path='/rest-password' Component={Reset_password}> </Route>
-            <Route path='/sign-up' Component={Sign_up}> </Route>
-          </Route>
-          <Route path='*' element={<Error404 />} />
-        </Routes>
-      </Router>
-      <ToastContainer />
+        <Router>
+          <Routes>
+            {/* Dashboard Routes */}
+            <Route path='/dashboard' element={<Dashboard_layout />}>
+              <Route index element={<Dashboard_MyRutines />} />
+              <Route path='/dashboard/myRutines' element={<Dashboard_MyRutines />} />
+              <Route path='/dashboard/edit-account' element={<Edit_Account />}> </Route>
+            </Route>
+
+            <Route path='/' element={<Auth_layout />}>
+              <Route index element={<Home />}></Route>
+              <Route path='/activate/:uid/:token' Component={Activate}> </Route>
+              <Route path='/login' Component={Login}> </Route>
+              <Route path='/password/reset/confirm/:uid/:token' Component={Rest_password_comfirmation}> </Route>
+              <Route path='/rest-password' Component={Reset_password}> </Route>
+              <Route path='/sign-up' Component={Sign_up}> </Route>
+            </Route>
+            <Route path='*' element={<Error404 />} />
+          </Routes>
+        </Router>
+        <ToastContainer />
       </Provider>
     </>
   )
