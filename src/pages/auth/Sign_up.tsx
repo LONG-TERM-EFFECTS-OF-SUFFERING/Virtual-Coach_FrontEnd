@@ -31,7 +31,7 @@ const Sign_up = () => {
         e.stopPropagation()
         setAlert({ show: true, status: "Loading", message: "" })
         const { data, error } = await user_create(email, name, password, re_password)
-        const message = error ? data[Object.keys(data)[0]][0] : "Login Success"
+        const message = error ? data[Object.keys(data)[0]][0] : "User Created"
         setAlert({ show: error, status: error ? "Error" : "Success", message })
     }
 
@@ -64,7 +64,7 @@ const Sign_up = () => {
                         <div className="mb-3">
                             {Alert.show && Alert.status == 'Loading' && <LoadingAlert />}
                             {Alert.show && Alert.status == 'Error' && <FailedAlert message={Alert.message} />}
-                            {Alert.show && Alert.status == 'Success' && <SuccessAlert message={Alert.message} />}
+                            {!Alert.show && Alert.status == 'Success' && <SuccessAlert message={Alert.message} />}
                         </div>
                         <form onSubmit={e => handleSubmit(e)} className="bg-white shadow-md flex flex-col items-center rounded-xl px-8 pt-10 pb-8 mb-1">
 

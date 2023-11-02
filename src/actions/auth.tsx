@@ -5,19 +5,13 @@ import { jwt_create, jwt_verify, users_me } from './api/auth';
 export const login: any = (email: string, password: string) => async (dispatch: AppDispatch) => {
 
     try {
-        const data = await jwt_create(email, password)
-        dispatch(loginUserSuccess(data))
+        const response = await jwt_create(email, password)
+        dispatch(loginUserSuccess(response))
         dispatch(load_user())
-        return {
-            status: true,
-            message: "Login Success"
-        }
-    } catch {
+        return { data: response.data, error: false }
+    } catch(err:any) {
         dispatch(loginUserFail())
-        return {
-            status: false,
-            message: "Login Fail"
-        }
+        return { data: err.response.data, error: true }
     }
 }
 

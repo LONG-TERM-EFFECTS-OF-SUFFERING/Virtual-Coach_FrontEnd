@@ -21,7 +21,7 @@ const Login: React.FC<LoginProps> = ({ login, access }) => {
   })
 
   const [showPassword, setShowPassword] = useState(false)
-  const [loginAlert, setLoginAlert] = useState({ show: false, status: "" , message: ""})
+  const [loginAlert, setLoginAlert] = useState({ show: false, status: "", message: "" })
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
@@ -41,8 +41,9 @@ const Login: React.FC<LoginProps> = ({ login, access }) => {
       const result = await login(email, password)
       return result
     }
-    const { status, message } = await loginUser()
-    setLoginAlert({ show: !status, status: message, message: message })
+    const { data, error } = await loginUser()
+    const message = error ? data[Object.keys(data)[0]] : "Login Success"
+    setLoginAlert({ show: error, status: error ? "Error" : "Success", message })
   }
 
   const navigate = useNavigate()
@@ -62,7 +63,7 @@ const Login: React.FC<LoginProps> = ({ login, access }) => {
     <div className="bg-white p-8 w-full md:w-96 rounded-xl">
       <div className="mb-3">
         {loginAlert.show && loginAlert.status == 'Loading' && <LoadingAlert />}
-        {loginAlert.show && loginAlert.status == 'Login Fail' && <FailedAlert message={loginAlert.message} />}
+        {loginAlert.show && loginAlert.status == 'Error' && <FailedAlert message={loginAlert.message} />}
       </div>
 
       <h1 className="text-2xl font-bold mb-5 text-center">Iniciar Sesión</h1>
