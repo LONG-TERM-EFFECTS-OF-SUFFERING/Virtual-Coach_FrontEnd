@@ -16,6 +16,7 @@ import { store } from './store/store'
 import { Provider } from 'react-redux';
 import Dashboard_layout from './layout/dashboard/Dashboard_layout'
 import Dashboard_MyRutines from './pages/dashboard/Dashboard_MyRutines'
+import Dashboard_create_routine from './pages/dashboard/Dashboard_create_routine'
 function App() {
 
   return (
@@ -28,6 +29,7 @@ function App() {
               <Route index element={<Dashboard_MyRutines />} />
               <Route path='/dashboard/myRutines' element={<Dashboard_MyRutines />} />
               <Route path='/dashboard/edit-account' element={<Edit_Account />}> </Route>
+              <Route path='/dashboard/create-routine' element={<Dashboard_create_routine />}> </Route>
             </Route>
 
             <Route path='/' element={<Auth_layout />}>
