@@ -12,13 +12,14 @@ const Dashboard_MyRutines = () => {
 
   useEffect(() => {
     const getRoutines = async () => {
+      setLoading(true)
       const { data, error } = await user_routines(email)
       if (!error) {
         setMyRoutines(data)
         setLoading(false)
       }
     }
-    console.log(myRoutines)
+
     getRoutines()
   }, [])
 
@@ -31,9 +32,8 @@ const Dashboard_MyRutines = () => {
       }
       {!loading && myRoutines.length != 0 &&
         <div className="bg-gray-800 rounded-lg p-4 min-h-screen">
-          {myRoutines.length === 0 && <div className="text-white text-center">You don't have any routine yet</div>}
           {myRoutines.map((routine_reg, index) => {
-            const routine = routine_reg['routine']
+            const routine = routine_reg
             return (
               <div key={index} className='p-4'
                 onClick={() => (console.log("rutina: " + routine['name']))}>

@@ -24,8 +24,8 @@ const Sidebar: React.FC<SideBarProps> = ({logout, access}) => {
             path: '/dashboard/recomendedRutines'
         },
         {
-            display: 'Crear Rutina',
-            path: '/dashboard/makeRutine'
+            display: 'Create Routine',
+            path: '/dashboard/create-routine'
         },
         {
             display: 'Editar mi Cuenta',
