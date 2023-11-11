@@ -43,7 +43,22 @@ export const create_user_routine: any = async (user:number, routine:any) => {
     const body = JSON.stringify({user, routine})
     try{
         const response = await axios.post(`${api_url}/routines/api/User_has_Routine/`, body, config)
-        console.log(response)
+        return { data: response.data, error: false }
+    }
+    catch(err: any){
+        return { data: err.response.data, error: true }
+    }
+}
+
+export const get_routine: any = async (routine:number) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }
+    try{
+        const response = await axios.get(`${api_url}/routines/api/routine/${routine}`, config)
+        console.log(response.data)
         return { data: response.data, error: false }
     }
     catch(err: any){

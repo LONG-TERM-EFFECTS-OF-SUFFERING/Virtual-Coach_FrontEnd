@@ -3,6 +3,7 @@ import Card_routine from '../../components/dashboard/UI/Card_routine';
 import { user_routines } from '../../actions/api/routines';
 import { useAppSelector } from '../../store/hooks/hooks';
 import LoadingAlert from '../../components/alerts/LoadingAlert';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard_MyRutines = () => {
 
@@ -23,6 +24,12 @@ const Dashboard_MyRutines = () => {
     getRoutines()
   }, [])
 
+  const navigate = useNavigate()
+  const showRoutine = (e: any, routine: number) => {
+    e.preventDefault()
+    navigate(`/dashboard/routine/${routine}`)
+  }
+
   return (
     <>
       {loading &&
@@ -36,7 +43,7 @@ const Dashboard_MyRutines = () => {
             const routine = routine_reg
             return (
               <div key={index} className='p-4'
-                onClick={() => (console.log("rutina: " + routine['name']))}>
+                onClick={(e) => (showRoutine(e, routine['id']))}>
                 <Card_routine
                   id={routine['id']}
                   name={routine['name']}
