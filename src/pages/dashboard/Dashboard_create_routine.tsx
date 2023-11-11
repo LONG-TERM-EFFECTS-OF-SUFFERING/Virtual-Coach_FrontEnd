@@ -2,10 +2,14 @@ import { useEffect, useState } from "react"
 import RoutineTable from "../../components/dashboard/RoutineTable/RoutineTable"
 import { useAppSelector } from "../../store/hooks/hooks";
 import { create_user_routine, get_exercises } from "../../actions/api/routines";
+import LoadingAlert from "../../components/alerts/LoadingAlert";
+import FailedAlert from "../../components/alerts/FailedAlert";
+import SuccessAlert from "../../components/alerts/SuccessAlert";
 
 const Dashboard_create_routine = () => {
 
     const user_id = useAppSelector((state) => state.user && state.user.id ? state.user.id : null);
+    const [alert, setAlert] = useState({ show: false, status: "", message: "" })
 
     const [exercises, setExercises] = useState<Array<{ exercise: number; series: number; repetitions: number; rest: number }>>([])
     const [exerciseSelected, setExercise] = useState({
@@ -21,7 +25,7 @@ const Dashboard_create_routine = () => {
         description: "",
     })
 
-    const [exercisesAvailable, setExercisesAvailable] = useState<Array<{ id: number; name: string; img_url:string }>>([])
+    const [exercisesAvailable, setExercisesAvailable] = useState<Array<{ id: number; name: string; img_url: string }>>([])
     useEffect(() => {
         const getExercises = async () => {
             const { data, error } = await get_exercises()
@@ -46,7 +50,7 @@ const Dashboard_create_routine = () => {
         e.preventDefault()
         if (exercise != -1) {
             setExercises([...exercises, exerciseSelected])
-            setExercisesShow([...exercisesShow, { name: exercisesAvailable.filter((e) => e['id']==exercise)[0]['name'], sets: series, reps: repetitions, rest: rest }])
+            setExercisesShow([...exercisesShow, { name: exercisesAvailable.filter((e) => e['id'] == exercise)[0]['name'], sets: series, reps: repetitions, rest: rest }])
             setExercise({
                 exercise: -1,
                 series: 1,
@@ -56,7 +60,7 @@ const Dashboard_create_routine = () => {
         }
     }
 
-    const deleteExercise = (e:any,index: number) => {
+    const deleteExercise = (e: any, index: number) => {
         e.preventDefault()
         const updatedExercises = [...exercises].filter((_, i) => i != index);
         const updatedExercisesShow = [...exercisesShow].filter((_, i) => i != index);
@@ -69,24 +73,44 @@ const Dashboard_create_routine = () => {
         const routine = {
             name: name_r,
             description,
-            time: exercises.reduce((acc, curr) => acc + curr.rest, 0),
+            time: exercises.reduce((acc, curr) => acc + (curr.rest*curr.series), 0),
             exercises_number: exercises.length,
             exercises: exercises
         }
         const user = user_id
-           
-        const { data, error } = await create_user_routine(user, routine)
-        if (!error) {
-            console.log(data)
+
+        if (routine.name == "" || routine.description == "") {
+            setAlert({ show: true, status: "Error", message: "Please fill all the fields" })
+        } else if (routine.exercises_number == 0) {
+            setAlert({ show: true, status: "Error", message: "Please add at least one exercise" })
         }
         else {
-            console.log(data)
+            setAlert({ show: true, status: "Loading", message: "Loading..." })
+            const { data, error } = await create_user_routine(user, routine)
+            const message = error ? data[Object.keys(data)[0]][0] : "Routine Created"
+            setAlert({ show: error, status: error ? "Error" : "Success", message: message })
+            if (!error) {
+                setRoutineInfo({
+                    name_r: "",
+                    description: "",
+                })
+                setExercises([])
+                setExercisesShow([])
+            }
         }
+
+
     }
 
     return (
         <div className="bg-gray-800 rounded-lg p-4 min-h-screen flex items-center justify-center">
+
             <form className="bg-white shadow-md flex flex-col items-center rounded-xl px-8 pt-10 pb-8 mb-1">
+                <div>
+                    {alert.show && alert.status == 'Loading' && <LoadingAlert />}
+                    {alert.show && alert.status == 'Error' && <FailedAlert message={alert.message} />}
+                    {!alert.show && alert.status == 'Success' && <SuccessAlert message={alert.message} />}
+                </div>
                 <div className="mb-4 font-bold">
                     Create Your Routine
                 </div>
@@ -109,17 +133,26 @@ const Dashboard_create_routine = () => {
                                 return (
                                     <option key={index} value={exercise['id']}>{exercise['name']}</option>
                                 )
-                            
+
                             })}
                         </select>
                     </div>
-                    <div className="relative mt-2">
+                    <div className="mt-2">
+                        <label>Series</label>
+                    </div>
+                    <div className="relative">
                         <input type="number" min={1} className="bg-gray-50 border outline-none pl-2 rounded-lg py-1" placeholder="sets" name="series" value={series} onChange={(e) => onChangeExercise(e)} />
                     </div>
-                    <div className="relative mt-2">
+                    <div className="mt-2">
+                        <label>Repetitions</label>
+                    </div>
+                    <div className="relative">
                         <input type="number" min={1} className="bg-gray-50 border outline-none pl-2 rounded-lg py-1" placeholder="reps" name="repetitions" value={repetitions} onChange={(e) => onChangeExercise(e)} />
                     </div>
-                    <div className="relative mt-2">
+                    <div className="mt-2">
+                        <label>Rest (minutes)</label>
+                    </div>
+                    <div className="relative">
                         <input type="number" min={1} className="bg-gray-50 border outline-none pl-2 rounded-lg py-1" placeholder="rest" name="rest" value={rest} onChange={(e) => onChangeExercise(e)} />
                     </div>
                     <div className="relative mt-4 w-full border">
