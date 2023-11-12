@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import RoutineTableShow from "../../components/dashboard/RoutineTable/RoutineTableShow"
 import { get_routine } from "../../actions/api/routines"
 import { useParams } from 'react-router-dom'
+import LoadingAlert from "../../components/alerts/LoadingAlert"
+import FailedAlert from "../../components/alerts/FailedAlert"
 
 type Exercise = {
     id: number,
@@ -19,35 +21,51 @@ type Exercise = {
 const Dashboard_routine = () => {
     const { routine } = useParams<{ routine: string }>()
     const [exercises, setExercises] = useState<Array<Exercise>>([])
+    const [routineInfo, setRoutineInfo] = useState<any>({
+        name: '',
+        description: ''
+    })
+
+    const [alert, setAlert] = useState({ show: false, message: '', status: '' })
+
     useEffect(() => {
         const get_exercises = async () => {
             const { data, error } = await get_routine(routine)
             if (!error) {
-                setExercises(data)
+                setExercises(data['exercise'])
+                setRoutineInfo({
+                    name: data['name'],
+                    description: data['description']
+                })
             }
+            setAlert({ show: error, message: 'Routine Load Failed', status: 'error' })
         }
+        setAlert({ show: true, message: 'Loading...', status: 'loading' })
         get_exercises()
+
     }, [])
 
-    /*
-    const exercises: any = [
-        {
-            "id": 1,
-            "repetitions": 10,
-            "series": 10,
-            "rest": 10,
-            "exercise": {
-                "id": 5,
-                "name": "Squats",
-                "img_url": "https://www.freepik.es/foto-gratis/ejercicio-concepto-bienestar-mujeres-mujer-joven-forma-fisica-haciendo-sentadillas-ejercicio-casa-gimnasio_83330295.htm#query=squats&position=5&from_view=search&track=sph"
-            }
-        }
-    ]*/
 
     return (
-        <div className="bg-gray-300 rounded-lg p-4 min-h-screen">
-            <RoutineTableShow exercises={exercises} />
-        </div>
+        <>
+            {alert.show &&
+                <div className="bg-gray-300 rounded-lg p-4 min-h-screen flex items-center justify-center">
+                    {alert.show && alert.status == 'loading' && <LoadingAlert />}
+                    {alert.show && alert.status == 'error' && <FailedAlert message={alert.message} />}
+                </div>
+            }
+            {!alert.show &&
+                <div className="bg-gray-300 rounded-lg p-4 min-h-screen">
+                    <div className="flex justify-center">
+                        <h1 className="text-4xl font-bold">{routineInfo.name}</h1>
+                    </div>
+                    <div className="flex justify-center mb-2">
+                        <p className="text-xl">{routineInfo.description}</p>
+                    </div>
+                    <RoutineTableShow exercises={exercises} />
+                </div>
+            }
+        </>
     )
 }
 
