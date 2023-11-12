@@ -17,6 +17,7 @@ import { Provider } from 'react-redux';
 import Dashboard_layout from './layout/dashboard/Dashboard_layout'
 import Dashboard_MyRutines from './pages/dashboard/Dashboard_MyRutines'
 import Dashboard_create_routine from './pages/dashboard/Dashboard_create_routine'
+import Dashboard_routine from './pages/dashboard/Dashboard_routine'
 function App() {
 
   return (
@@ -24,10 +25,12 @@ function App() {
       <Provider store={store} >
         <Router>
           <Routes>
+            
             {/* Dashboard Routes */}
             <Route path='/dashboard' element={<Dashboard_layout />}>
               <Route index element={<Dashboard_MyRutines />} />
               <Route path='/dashboard/myRutines' element={<Dashboard_MyRutines />} />
+              <Route path='/dashboard/routine/:routine' element={<Dashboard_routine />}> </Route>
               <Route path='/dashboard/edit-account' element={<Edit_Account />}> </Route>
               <Route path='/dashboard/create-routine' element={<Dashboard_create_routine />}> </Route>
             </Route>
