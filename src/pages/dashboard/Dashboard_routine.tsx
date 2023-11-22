@@ -45,6 +45,13 @@ const Dashboard_routine = () => {
 
     }, [])
 
+    const handleDelete = () => {
+        console.log('delete ' + routine)
+    }
+
+    const handleEdit = () => {
+        console.log('edit ' + routine)
+    }
 
     return (
         <>
@@ -63,6 +70,11 @@ const Dashboard_routine = () => {
                         <p className="text-xl">{routineInfo.description}</p>
                     </div>
                     <RoutineTableShow exercises={exercises} />
+                    <div className="flex justify-between mt-4">
+                        <button onClick={handleDelete} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete Routine</button>
+                        <button onClick={handleEdit} className="bg-green-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Edit Routine</button>
+                    </div>
+
                 </div>
             }
         </>
