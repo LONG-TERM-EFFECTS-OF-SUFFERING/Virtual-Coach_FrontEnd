@@ -48,7 +48,7 @@ const Dashboard_routine = () => {
     const handleDelete = async () => {
         console.log('delete ' + routine)
         setAlert({ show: true, message: 'Deleting...', status: 'loading' })
-        const { data, error } = await delete_routine(routine)
+        const { error } = await delete_routine(routine)
         if (!error) {
             setAlert({ show: true, message: 'Routine Deleted', status: 'success' })
         }
