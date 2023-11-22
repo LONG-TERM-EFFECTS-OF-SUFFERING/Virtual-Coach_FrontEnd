@@ -65,3 +65,19 @@ export const get_routine: any = async (routine:number) => {
         return { data: err.response.data, error: true }
     }
 }
+
+export const delete_routine: any = async (routine:number) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }
+    try{
+        const response = await axios.delete(`${api_url}/routines/api/routine/${routine}`, config)
+        console.log(response.data)
+        return { data: response.data, error: false }
+    }
+    catch(err: any){
+        return { data: err.response.data, error: true }
+    }
+}
