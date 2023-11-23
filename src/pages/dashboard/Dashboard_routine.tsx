@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import RoutineTableShow from "../../components/dashboard/RoutineTable/RoutineTableShow"
-import { delete_routine, get_routine } from "../../actions/api/routines"
+import { delete_routine, get_exercises, get_routine } from "../../actions/api/routines"
 import { useParams } from 'react-router-dom'
 import LoadingAlert from "../../components/alerts/LoadingAlert"
 import FailedAlert from "../../components/alerts/FailedAlert"
@@ -22,6 +22,7 @@ type Exercise = {
 const Dashboard_routine = () => {
     const { routine } = useParams<{ routine: string }>()
     const [exercises, setExercises] = useState<Array<Exercise>>([])
+    const [exercisesAvailable, setExercisesAvailable] = useState<Array<any>>([])
     const [routineInfo, setRoutineInfo] = useState<any>({
         name: '',
         description: ''
@@ -33,11 +34,17 @@ const Dashboard_routine = () => {
     const [editedExercises, setEditedExercises] = useState<Array<any>>([])
 
     const [editMode, setEditMode] = useState<boolean>(true)
+    const [newExercise, setNewExercise] = useState<any>({
+        exercise: -1,
+        series: 1,
+        repetitions: 1,
+        rest: 1
+    })
 
     const [alert, setAlert] = useState({ show: false, message: '', status: '' })
 
     useEffect(() => {
-        const get_exercises = async () => {
+        const getExercises = async () => {
             const { data, error } = await get_routine(routine)
             if (!error) {
                 setExercises(data['exercise'])
@@ -53,8 +60,16 @@ const Dashboard_routine = () => {
             }
             setAlert({ show: error, message: 'Routine Load Failed', status: 'error' })
         }
+
+        const get_exercises_available = async () => {
+            const { data, error } = await get_exercises()
+            if (!error) {
+                setExercisesAvailable(data)
+            }
+        }
+        get_exercises_available()
         setAlert({ show: true, message: 'Loading...', status: 'loading' })
-        get_exercises()
+        getExercises()
 
     }, [])
 
@@ -82,14 +97,63 @@ const Dashboard_routine = () => {
     }
 
     const acceptEditRoutine = () => {
-        setEditMode(false)
+        const editedOrNewExercises = editedExercises.map((exer: any) => {
+            if (exer.id) {
+                return {
+                    id: exer.id,
+                    series: exer.series,
+                    repetitions: exer.repetitions,
+                    rest: exer.rest
+                }
+            }
+            else {
+                return {
+                    exercise: exer.exercise.id,
+                    series: exer.series,
+                    repetitions: exer.repetitions,
+                    rest: exer.rest
+                }
+            }
+        })
+        const editedRoutine = { ...editedRoutineInfo, exercises: editedOrNewExercises }
+        console.log("Routine", routine, editedRoutine)
     }
 
     const deleteExercise = (index: number, id: number) => {
-        console.log('delete ' + id)
+        if (id) {
+            console.log('delete ' + id)
+        }
+        else {
+            const updatedExercises = [...editedExercises].filter((_, i) => i != index);
+            setEditedExercises(updatedExercises);
+        }
     }
 
     const onChangeEditedRoutineInfo = (e: any) => setEditedRoutineInfo({ ...routineInfo, [e.target.name]: e.target.value });
+
+    const onChangeNewExercise = (e: any) => {
+        setNewExercise({ ...newExercise, [e.target.name]: e.target.value })
+    };
+
+    const addNewExercise = () => {
+        if (newExercise.exercise != -1) {
+            console.log(newExercise)
+            const newExerciseToAdd = {
+                exercise: exercisesAvailable.filter((e: any) => e['id'] == newExercise.exercise)[0],
+                series: newExercise.series,
+                repetitions: newExercise.repetitions,
+                rest: newExercise.rest
+            }
+            setEditedExercises([...editedExercises, newExerciseToAdd])
+            setNewExercise({
+                exercise: -1,
+                series: 1,
+                repetitions: 1,
+                rest: 1
+            })
+        }
+        console.log(newExercise)
+    }
 
     const onChangeEditedExercises = (
         index: number,
@@ -127,7 +191,7 @@ const Dashboard_routine = () => {
                         }
                     </div>
                     {editMode ?
-                        <RoutineTableEdit editedExercises={editedExercises} deleteExercise={deleteExercise} onChangeEditedExercises={onChangeEditedExercises}/>
+                        <RoutineTableEdit editedExercises={editedExercises} deleteExercise={deleteExercise} onChangeEditedExercises={onChangeEditedExercises} onChangeNewExercise={onChangeNewExercise} addNewExercise={addNewExercise} newExercise={newExercise} exercisesAvailable={exercisesAvailable} />
                         :
                         <RoutineTableShow exercises={exercises} />
                     }

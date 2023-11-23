@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 
 type Exercise = {
     id: number;
@@ -16,9 +15,13 @@ type RoutineTableProps = {
     }>;
     deleteExercise: (index: number, id: number) => void;
     onChangeEditedExercises: (index: number, field: string, value: number) => void;
+    onChangeNewExercise: (e:any) => void;
+    addNewExercise: () => void;
+    newExercise: any;
+    exercisesAvailable: Array<any>;
 };
 
-const RoutineTableEdit: React.FC<RoutineTableProps> = ({ editedExercises, deleteExercise, onChangeEditedExercises }) => {
+const RoutineTableEdit: React.FC<RoutineTableProps> = ({ editedExercises, deleteExercise, onChangeEditedExercises, onChangeNewExercise, addNewExercise, newExercise, exercisesAvailable }) => {
     const columns = ["Exercise", "Sets", "Reps", "Rest (minutes)"];
 
     return (
@@ -32,7 +35,7 @@ const RoutineTableEdit: React.FC<RoutineTableProps> = ({ editedExercises, delete
                             </th>
                         ))}
                         <th scope="col" className="px-6 py-3">
-                            
+
                         </th>
                     </tr>
                 </thead>
@@ -76,6 +79,58 @@ const RoutineTableEdit: React.FC<RoutineTableProps> = ({ editedExercises, delete
                             </tr>
                         );
                     })}
+                    {/* New row for adding a new exercise */}
+                    <tr className="border-b bg-gray-800 border-gray-700 rounded">
+                        <td className="px-6 py-4">
+                            {/* Select field for Exercise Name */}
+                            <select
+                                value={newExercise.exercise}
+                                name="exercise"
+                                onChange={(e) => onChangeNewExercise(e)}
+                            >
+                                <option value="" disabled>Select Exercise</option>
+                                {exercisesAvailable.map((exer, index) => (
+                                    <option key={index} value={exer.id}>{exer.name}</option>
+                                ))}
+                            </select>
+                        </td>
+                        <td className="px-6 py-4">
+                            {/* Input field for Sets */}
+                            <input
+                                type="number"
+                                placeholder="Sets"
+                                value={newExercise.series}
+                                name="series"
+                                onChange={(e) => onChangeNewExercise(e)}
+                            />
+                        </td>
+                        <td className="px-6 py-4">
+                            {/* Input field for Repetitions */}
+                            <input
+                                type="number"
+                                placeholder="Repetitions"
+                                value={newExercise.repetitions}
+                                name="repetitions"
+                                onChange={(e) => onChangeNewExercise(e)}
+                            />
+                        </td>
+                        <td className="px-6 py-4">
+                            {/* Input field for Rest */}
+                            <input
+                                type="number"
+                                placeholder="Rest (minutes)"
+                                value={newExercise.rest}
+                                name="rest"
+                                onChange={(e) => onChangeNewExercise(e)}
+                            />
+                        </td>
+                        <td className="px-6 py-4">
+                            {/* Button to add the new exercise */}
+                            <button className="text-green-500 hover:text-green-700" onClick={addNewExercise}>
+                                Add
+                            </button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             {editedExercises.length === 0 && (
