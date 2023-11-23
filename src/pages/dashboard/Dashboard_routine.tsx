@@ -4,6 +4,7 @@ import { delete_routine, get_routine } from "../../actions/api/routines"
 import { useParams } from 'react-router-dom'
 import LoadingAlert from "../../components/alerts/LoadingAlert"
 import FailedAlert from "../../components/alerts/FailedAlert"
+import RoutineTableEdit from "../../components/dashboard/RoutineTable/RoutineTableEdit"
 
 type Exercise = {
     id: number,
@@ -25,6 +26,13 @@ const Dashboard_routine = () => {
         name: '',
         description: ''
     })
+    const [editedRoutineInfo, setEditedRoutineInfo] = useState<any>({
+        name: '',
+        description: ''
+    })
+    const [editedExercises, setEditedExercises] = useState<Array<any>>([])
+
+    const [editMode, setEditMode] = useState<boolean>(true)
 
     const [alert, setAlert] = useState({ show: false, message: '', status: '' })
 
@@ -33,7 +41,12 @@ const Dashboard_routine = () => {
             const { data, error } = await get_routine(routine)
             if (!error) {
                 setExercises(data['exercise'])
+                setEditedExercises([...data['exercise']])
                 setRoutineInfo({
+                    name: data['name'],
+                    description: data['description']
+                })
+                setEditedRoutineInfo({
                     name: data['name'],
                     description: data['description']
                 })
@@ -58,8 +71,35 @@ const Dashboard_routine = () => {
     }
 
     const handleEdit = () => {
-        console.log('edit ' + routine)
+        setEditMode(true)
     }
+
+
+    const cancelEditRoutine = () => {
+        setEditedRoutineInfo(routineInfo)
+        setEditedExercises(exercises)
+        setEditMode(false)
+    }
+
+    const acceptEditRoutine = () => {
+        setEditMode(false)
+    }
+
+    const deleteExercise = (index: number, id: number) => {
+        console.log('delete ' + id)
+    }
+
+    const onChangeEditedRoutineInfo = (e: any) => setEditedRoutineInfo({ ...routineInfo, [e.target.name]: e.target.value });
+
+    const onChangeEditedExercises = (
+        index: number,
+        field: string,
+        value: number | string
+    ) => {
+        const newExercises = JSON.parse(JSON.stringify(editedExercises));;
+        newExercises[index][field] = value;
+        setEditedExercises(newExercises);
+    };
 
     return (
         <>
@@ -73,16 +113,37 @@ const Dashboard_routine = () => {
             {!alert.show &&
                 <div className="bg-gray-300 rounded-lg p-4 min-h-screen">
                     <div className="flex justify-center">
-                        <h1 className="text-4xl font-bold">{routineInfo.name}</h1>
+                        {editMode ?
+                            <input type="text" className="text-4xl font-bold" value={editedRoutineInfo.name} name="name" onChange={e => onChangeEditedRoutineInfo(e)}/>
+                            :
+                            <h1 className="text-4xl font-bold">{routineInfo.name}</h1>
+                        }
                     </div>
-                    <div className="flex justify-center mb-2">
-                        <p className="text-xl">{routineInfo.description}</p>
+                    <div className="flex justify-center mb-2 mt-2 w-full">
+                        {editMode ?
+                            <textarea className="text-xl w-full" value={editedRoutineInfo.description} name="description" onChange={e => onChangeEditedRoutineInfo(e)} />
+                            :
+                            <p className="text-xl">{routineInfo.description}</p>
+                        }
                     </div>
-                    <RoutineTableShow exercises={exercises} />
-                    <div className="flex justify-between mt-4">
-                        <button onClick={handleDelete} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete Routine</button>
-                        <button onClick={handleEdit} className="bg-green-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Edit Routine</button>
-                    </div>
+                    {editMode ?
+                        <RoutineTableEdit editedExercises={editedExercises} deleteExercise={deleteExercise} onChangeEditedExercises={onChangeEditedExercises}/>
+                        :
+                        <RoutineTableShow exercises={exercises} />
+                    }
+
+                    {editMode ?
+                        <div className="flex justify-between mt-4">
+                            <button onClick={cancelEditRoutine} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Cancel</button>
+                            <button onClick={acceptEditRoutine} className="bg-green-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Accept</button>
+                        </div>
+                        :
+                        <div className="flex justify-between mt-4">
+                            <button onClick={handleDelete} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete Routine</button>
+                            <button onClick={handleEdit} className="bg-green-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Edit Routine</button>
+                        </div>
+                    }
+
 
                 </div>
             }
