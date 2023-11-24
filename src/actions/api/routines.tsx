@@ -58,7 +58,6 @@ export const get_routine: any = async (routine:number) => {
     }
     try{
         const response = await axios.get(`${api_url}/routines/api/routine/${routine}`, config)
-        console.log(response.data)
         return { data: response.data, error: false }
     }
     catch(err: any){
@@ -74,7 +73,37 @@ export const delete_routine: any = async (routine:number) => {
     }
     try{
         const response = await axios.delete(`${api_url}/routines/api/routine/${routine}`, config)
-        console.log(response.data)
+        return { data: response.data, error: false }
+    }
+    catch(err: any){
+        return { data: err.response.data, error: true }
+    }
+}
+
+export const edit_routine: any = async (routine:number, editedRoutine:any) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }
+    const body = editedRoutine
+    try{
+        const response = await axios.patch(`${api_url}/routines/api/routine/${routine}/`, body, config)
+        return { data: response.data, error: false }
+    }
+    catch(err: any){
+        return { data: err.response.data, error: true }
+    }
+}
+
+export const delete_exercise: any = async (exercise:number) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }
+    try{
+        const response = await axios.delete(`${api_url}/routines/api/Routine_has_exercise/${exercise}`, config)
         return { data: response.data, error: false }
     }
     catch(err: any){
