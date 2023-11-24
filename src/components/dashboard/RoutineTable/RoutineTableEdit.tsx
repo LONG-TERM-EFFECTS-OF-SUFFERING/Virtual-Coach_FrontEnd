@@ -42,8 +42,9 @@ const RoutineTableEdit: React.FC<RoutineTableProps> = ({ editedExercises, delete
                 <tbody>
                     {editedExercises.map((exer, key) => {
                         const { id, exercise, series, repetitions, rest } = exer;
+                        const className = id ? "bg-gray-800" : "bg-gray-700";
                         return (
-                            <tr className="border-b bg-gray-800 border-gray-700 rounded" key={key}>
+                            <tr className={"border-b "+ className +" border-gray-700 rounded"} key={key}>
                                 <th scope="row" className="px-6 py-4 font-medium whitespace-nowrap text-white">
                                     {exercise["name"]}
                                 </th>

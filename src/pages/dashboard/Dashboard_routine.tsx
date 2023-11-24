@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import RoutineTableShow from "../../components/dashboard/RoutineTable/RoutineTableShow"
-import { delete_routine, edit_routine, get_exercises, get_routine } from "../../actions/api/routines"
+import { delete_exercise, delete_routine, edit_routine, get_exercises, get_routine } from "../../actions/api/routines"
 import { useParams } from 'react-router-dom'
 import LoadingAlert from "../../components/alerts/LoadingAlert"
 import FailedAlert from "../../components/alerts/FailedAlert"
@@ -33,7 +33,7 @@ const Dashboard_routine = () => {
     })
     const [editedExercises, setEditedExercises] = useState<Array<any>>([])
 
-    const [editMode, setEditMode] = useState<boolean>(true)
+    const [editMode, setEditMode] = useState<boolean>(false)
     const [newExercise, setNewExercise] = useState<any>({
         exercise: -1,
         series: 1,
@@ -118,7 +118,7 @@ const Dashboard_routine = () => {
         const editedRoutine = { ...editedRoutineInfo, exercises: editedOrNewExercises }
         console.log(editedRoutine)
         setAlert({ show: true, message: 'Updating...', status: 'loading' })
-        const {data, error} = await edit_routine(routine, editedRoutine)
+        const { data, error } = await edit_routine(routine, editedRoutine)
         if (!error) {
             setAlert({ show: true, message: 'Routine Updated', status: 'success' })
         }
@@ -128,10 +128,20 @@ const Dashboard_routine = () => {
         }
     }
 
-    const deleteExercise = (index: number, id: number) => {
+    const deleteExercise = async (index: number, id: number) => {
         if (id) {
-            // here we should delete the exercise from the database
-            console.log('delete ' + id)
+            setAlert({ show: true, message: 'Deleting...', status: 'loading' })
+            const { error } = await delete_exercise(id)
+            if (!error) {
+                const updatedEditedExercises = [...editedExercises].filter((_, i) => i != index);
+                const updatedExercises = [...exercises].filter((_, i) => i != index);
+                setExercises(updatedExercises);
+                setEditedExercises(updatedEditedExercises);
+                setAlert({ show: false, message: 'Exercise Deleted', status: 'success' })
+            }
+            else {
+                setAlert({ show: true, message: 'Exercise Delete Failed', status: 'error' })
+            }
         }
         else {
             const updatedExercises = [...editedExercises].filter((_, i) => i != index);
@@ -181,14 +191,21 @@ const Dashboard_routine = () => {
                 <div className="bg-gray-300 rounded-lg p-4 min-h-screen flex items-center justify-center">
                     {alert.show && alert.status == 'loading' && <LoadingAlert />}
                     {alert.show && alert.status == 'error' && <FailedAlert message={alert.message} />}
-                    {alert.show && alert.status == 'success' && <div className="bg-green-500 text-white font-bold rounded-lg border shadow-lg p-4">{alert.message}</div>}
+                    {alert.show && alert.status == 'success' &&
+                        <div>
+                            <div className="bg-green-500 text-white font-bold rounded-lg border shadow-lg p-4">{alert.message}</div>
+                            <div className="flex justify-center mt-4">
+                                <a href="/dashboard" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Go to Dashboard</a>
+                            </div>
+                        </div>
+                    }
                 </div>
             }
             {!alert.show &&
                 <div className="bg-gray-300 rounded-lg p-4 min-h-screen">
                     <div className="flex justify-center">
                         {editMode ?
-                            <input type="text" className="text-4xl font-bold" value={editedRoutineInfo.name} name="name" onChange={e => onChangeEditedRoutineInfo(e)}/>
+                            <input type="text" className="text-4xl font-bold" value={editedRoutineInfo.name} name="name" onChange={e => onChangeEditedRoutineInfo(e)} />
                             :
                             <h1 className="text-4xl font-bold">{routineInfo.name}</h1>
                         }
