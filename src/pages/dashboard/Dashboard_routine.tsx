@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import RoutineTableShow from "../../components/dashboard/RoutineTable/RoutineTableShow"
-import { delete_routine, get_exercises, get_routine } from "../../actions/api/routines"
+import { delete_routine, edit_routine, get_exercises, get_routine } from "../../actions/api/routines"
 import { useParams } from 'react-router-dom'
 import LoadingAlert from "../../components/alerts/LoadingAlert"
 import FailedAlert from "../../components/alerts/FailedAlert"
@@ -96,7 +96,7 @@ const Dashboard_routine = () => {
         setEditMode(false)
     }
 
-    const acceptEditRoutine = () => {
+    const acceptEditRoutine = async () => {
         const editedOrNewExercises = editedExercises.map((exer: any) => {
             if (exer.id) {
                 return {
@@ -116,11 +116,21 @@ const Dashboard_routine = () => {
             }
         })
         const editedRoutine = { ...editedRoutineInfo, exercises: editedOrNewExercises }
-        console.log("Routine", routine, editedRoutine)
+        console.log(editedRoutine)
+        setAlert({ show: true, message: 'Updating...', status: 'loading' })
+        const {data, error} = await edit_routine(routine, editedRoutine)
+        if (!error) {
+            setAlert({ show: true, message: 'Routine Updated', status: 'success' })
+        }
+        else {
+            console.log(data)
+            setAlert({ show: true, message: 'Routine Update Failed', status: 'error' })
+        }
     }
 
     const deleteExercise = (index: number, id: number) => {
         if (id) {
+            // here we should delete the exercise from the database
             console.log('delete ' + id)
         }
         else {
@@ -129,7 +139,7 @@ const Dashboard_routine = () => {
         }
     }
 
-    const onChangeEditedRoutineInfo = (e: any) => setEditedRoutineInfo({ ...routineInfo, [e.target.name]: e.target.value });
+    const onChangeEditedRoutineInfo = (e: any) => setEditedRoutineInfo({ ...editedRoutineInfo, [e.target.name]: e.target.value });
 
     const onChangeNewExercise = (e: any) => {
         setNewExercise({ ...newExercise, [e.target.name]: e.target.value })
