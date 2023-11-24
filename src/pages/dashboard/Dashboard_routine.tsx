@@ -97,6 +97,8 @@ const Dashboard_routine = () => {
     }
 
     const acceptEditRoutine = async () => {
+        const time = editedExercises.reduce((acc, exer) => acc + exer.series * exer.rest, 0)
+        const exercises_number = editedExercises.length
         const editedOrNewExercises = editedExercises.map((exer: any) => {
             if (exer.id) {
                 return {
@@ -115,7 +117,7 @@ const Dashboard_routine = () => {
                 }
             }
         })
-        const editedRoutine = { ...editedRoutineInfo, exercises: editedOrNewExercises }
+        const editedRoutine = { ...editedRoutineInfo, exercises: editedOrNewExercises, time, exercises_number }
         console.log(editedRoutine)
         setAlert({ show: true, message: 'Updating...', status: 'loading' })
         const { data, error } = await edit_routine(routine, editedRoutine)
