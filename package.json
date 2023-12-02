@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "sonar": "sonar-scanner"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
@@ -42,6 +43,7 @@
     "tailwindcss": "^3.3.3",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
-    "vitest": "^0.34.6"
+    "vitest": "^0.34.6",
+    "sonarqube-scanner": "^2.7.0"
   }
 }
