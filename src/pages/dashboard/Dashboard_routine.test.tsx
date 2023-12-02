@@ -41,6 +41,12 @@ const routine = {
 
 beforeEach(() => {
     vi.resetAllMocks();
+    vi.spyOn(routine_api, 'get_exercises').mockImplementationOnce(() => {
+        return Promise.resolve({
+            error: false,
+            data: []
+        })
+    })
     cleanup()
 })
 
