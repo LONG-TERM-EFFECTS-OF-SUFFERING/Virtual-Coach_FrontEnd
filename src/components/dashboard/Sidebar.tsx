@@ -16,19 +16,15 @@ const Sidebar: React.FC<SideBarProps> = ({logout, access}) => {
 
     const navLinks = [
         {
-            display: 'My Rutines',
-            path: '/dashboard/myRutines'
-        },
-        {
-            display: 'Rutinas Recomendadas',
-            path: '/dashboard/recomendedRutines'
+            display: 'My Routines',
+            path: '/dashboard/myRoutines'
         },
         {
             display: 'Create Routine',
             path: '/dashboard/create-routine'
         },
         {
-            display: 'Editar mi Cuenta',
+            display: 'Edit Account',
             path: '/dashboard/edit-account'
         }
     ]
@@ -75,7 +71,7 @@ const Sidebar: React.FC<SideBarProps> = ({logout, access}) => {
                 }}
             >
                 <div className="h-full px-3 py-4 overflow-y-auto bg-gray-800">
-                    <a href="https://flowbite.com/" className="flex items-center pl-2.5 mb-5">
+                    <a className="flex items-center pl-2.5 mb-5">
                         <img src={logo} className="h-6 mr-3 sm:h-10" alt="Flowbite Logo" />
                         <span className="self-center text-xl font-semibold whitespace-nowrap text-white">Virtual Coach</span>
                     </a>

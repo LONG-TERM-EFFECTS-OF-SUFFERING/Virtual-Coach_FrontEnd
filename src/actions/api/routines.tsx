@@ -46,6 +46,7 @@ export const create_user_routine: any = async (user:number, routine:any) => {
         return { data: response.data, error: false }
     }
     catch(err: any){
+        console.log(err)
         return { data: err.response.data, error: true }
     }
 }
