@@ -7,14 +7,14 @@ import { useNavigate } from 'react-router-dom';
 
 const Dashboard_MyRutines = () => {
 
-  const email = useAppSelector((state) => state.user && state.user.email ? state.user.email : 0);
+  const user_id = useAppSelector((state) => state.user && state.user.id ? state.user.id : 0);
   const [myRoutines, setMyRoutines] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const getRoutines = async () => {
       setLoading(true)
-      const { data, error } = await user_routines(email)
+      const { data, error } = await user_routines(user_id)
       if (!error) {
         setMyRoutines(data)
         setLoading(false)

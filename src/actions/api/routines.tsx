@@ -1,7 +1,7 @@
 import axios from 'axios';
 const api_url = import.meta.env.VITE_API_URL;
 
-export const user_routines: any = async (email:string) => {
+export const user_routines: any = async (user_id:number) => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -11,7 +11,7 @@ export const user_routines: any = async (email:string) => {
         }
     }
     try{
-        const response = await axios.get(`${api_url}/routines/api/get-user-routines/${email}`, config)
+        const response = await axios.get(`${api_url}/routines/api/get-user-routines/${user_id}`, config)
         return { data: response.data, error: false }
     }
     catch(err: any){
