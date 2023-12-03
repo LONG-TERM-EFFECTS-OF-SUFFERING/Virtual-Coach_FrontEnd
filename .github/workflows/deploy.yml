@@ -1,0 +1,38 @@
+name: Deploy React App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: lts/Hydrogen
+
+    - name: Installing dependencies
+      run: npm i
+
+    - name: Running tests
+      run: npm run test
+
+    - name: Running build command
+      run: npm run build
+  
+  deploy:
+    name: Deploy
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to production
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
